@@ -23,6 +23,11 @@ export default {
         intro: 'var global = window;'
     },
 
+    // Keep the (huge) Phaser library external, so it is not compiled into game.js
+    external: [
+        'phaser'
+    ],
+
     plugins: [
 
         //  Toggle the booleans here to enable / disable Phaser 3 features:
