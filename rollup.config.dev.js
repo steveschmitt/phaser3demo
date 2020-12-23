@@ -1,7 +1,6 @@
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
-import serve from 'rollup-plugin-serve';
 import typescript from 'rollup-plugin-typescript2';
 
 export default {
@@ -25,7 +24,8 @@ export default {
 
     // Keep the (huge) Phaser library external, so it is not compiled into game.js
     external: [
-        'phaser'
+        'phaser',
+        'socket.io-client'
     ],
 
     plugins: [
@@ -62,15 +62,15 @@ export default {
         typescript(),
 
         //  See https://www.npmjs.com/package/rollup-plugin-serve for config options
-        serve({
-            open: true,
-            contentBase: 'dist',
-            host: '192.168.0.101',
-            port: 10001,
-            headers: {
-                'Access-Control-Allow-Origin': '*'
-            }
-        })
+        // serve({
+        //     open: true,
+        //     contentBase: 'dist',
+        //     host: '192.168.0.101',
+        //     port: 10001,
+        //     headers: {
+        //         'Access-Control-Allow-Origin': '*'
+        //     }
+        // })
 
     ]
 };

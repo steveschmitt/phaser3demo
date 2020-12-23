@@ -1,14 +1,29 @@
 import "phaser";
+import "socket.io-client";
+
+interface PlayerData {
+    rotation: number;
+    x: number;
+    y: number;
+    playerId: string;
+    team: "red" | "blue";
+}
 
 export default class Demo extends Phaser.Scene {
 
     cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+    playerMap: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody[];
+    platforms: Phaser.Physics.Arcade.StaticGroup;
+    stars: Phaser.Physics.Arcade.Group;
     score = 0;
     scoreText: Phaser.GameObjects.Text;
+    socket: any;
 
     constructor() {
         super("demo");
+        this.playerMap = [];
+        this.socket = io.connect();
     }
 
     preload() {
@@ -56,16 +71,6 @@ export default class Demo extends Phaser.Scene {
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
         });
 
-
-        // create the player, a movable physics sprite
-        const player = this.physics.add.sprite(100, 450, "dude");
-
-        // when the player lands it will bounce a little
-        player.setBounce(0.2);
-
-        // player cannot go outside the bounds of the world
-        player.setCollideWorldBounds(true);
-
         // create animation for player going left
         // animation is made from first 4 frames of the "dude" spritesheet
         // it cycles at 10 frames per second
@@ -92,21 +97,63 @@ export default class Demo extends Phaser.Scene {
             repeat: -1
         });
 
-        // add collision detection between player and platforms (so player will bounce)
-        this.physics.add.collider(player, platforms);
 
         // add collision detection between stars and platforms
         this.physics.add.collider(stars, platforms);
 
-        // when player overlaps star, call the collectStar function
-        this.physics.add.overlap(player, stars, this.collectStar, null, this);
+        this.platforms = platforms;
+        this.stars = stars;
 
         // add default score text in the upper left
         this.scoreText = this.add.text(16, 16, "Score: 0", { fontSize: "32px", color: "#000000" });
 
         this.cursorKeys = this.input.keyboard.createCursorKeys();
-        this.player = player;
 
+        this.createPlayer = this.createPlayer.bind(this);
+        this.player = this.createPlayer(100, 450);
+
+        this.socket.on("newplayer", this.addNewPlayer.bind(this));
+        this.socket.on("allplayers", this.addAllPlayers.bind(this));
+        this.socket.on("remove", this.removePlayer.bind(this));
+        this.socket.emit("newplayer");
+    }
+
+    createPlayer(x: number, y: number) {
+        // create the player, a movable physics sprite
+        const player = this.physics.add.sprite(x, y, "dude");
+
+        // when the player lands it will bounce a little
+        player.setBounce(0.2);
+
+        // player cannot go outside the bounds of the world
+        player.setCollideWorldBounds(true);
+
+        // add collision detection between player and platforms (so player will bounce)
+        this.physics.add.collider(player, this.platforms);
+
+        // when player overlaps star, call the collectStar function
+        this.physics.add.overlap(player, this.stars, this.collectStar, null, this);
+
+        return player;
+    }
+
+    addNewPlayer(pd: PlayerData) {
+        console.log(pd);
+        this.playerMap[pd.playerId] = this.createPlayer(pd.x, pd.y);
+    }
+
+    addAllPlayers(data: PlayerData[]) {
+        console.log("add all players");
+        for(let i = 0; i < data.length; i++) {
+            const p = data[i];
+            this.addNewPlayer(p);
+        }
+    }
+
+    removePlayer(id: string) {
+        console.log(id, this.playerMap[id]);
+        this.playerMap[id].destroy();
+        delete this.playerMap[id];
     }
 
     // called when player touches a star

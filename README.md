@@ -1,10 +1,12 @@
-# Phaser 3 TypeScript Project Template
+# Phaser 3 Demo
 
 Simple game created using the [Phaser 3 tutorial](http://phaser.io/tutorials/making-your-first-phaser-3-game/part1)
 
 Directory structure is based on the [Phaser 3 TypeScript Project Template](https://github.com/photonstorm/phaser3-typescript-project-template).
 
 This quick-start project template combines Phaser 3.50 with [TypeScript 4](https://www.typescriptlang.org/) and uses [Rollup](https://rollupjs.org) for bundling.
+
+This demo adds some socket.io functionality from [this Dynetis Games tutorial](https://www.dynetisgames.com/2017/03/06/how-to-make-a-multiplayer-online-game-with-phaser-socket-io-and-node-js/) and [this Game Dev Academy tutorial](https://gamedevacademy.org/create-a-basic-multiplayer-game-in-phaser-3-with-socket-io-part-1/).
 
 ## Requirements
 
