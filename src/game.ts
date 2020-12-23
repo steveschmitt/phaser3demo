@@ -23,7 +23,6 @@ export default class Demo extends Phaser.Scene {
     constructor() {
         super("demo");
         this.playerMap = [];
-        this.socket = io.connect();
     }
 
     preload() {
@@ -110,8 +109,8 @@ export default class Demo extends Phaser.Scene {
         this.cursorKeys = this.input.keyboard.createCursorKeys();
 
         this.createPlayer = this.createPlayer.bind(this);
-        this.player = this.createPlayer(100, 450);
 
+        this.socket = io.connect();
         this.socket.on("newplayer", this.addNewPlayer.bind(this));
         this.socket.on("allplayers", this.addAllPlayers.bind(this));
         this.socket.on("remove", this.removePlayer.bind(this));
@@ -138,22 +137,30 @@ export default class Demo extends Phaser.Scene {
     }
 
     addNewPlayer(pd: PlayerData) {
-        console.log(pd);
-        this.playerMap[pd.playerId] = this.createPlayer(pd.x, pd.y);
+        console.log("addNewPlayer", this.socket.id, pd);
+        const player = this.createPlayer(pd.x, pd.y);
+        if (this.socket.id === pd.playerId) {
+            this.player = player;
+        } else {
+            player.setTint(0xff0000);
+        }
+        this.playerMap[pd.playerId] = player;
     }
 
-    addAllPlayers(data: PlayerData[]) {
-        console.log("add all players");
-        for(let i = 0; i < data.length; i++) {
-            const p = data[i];
-            this.addNewPlayer(p);
-        }
+    addAllPlayers(data: { [id: string]: PlayerData }) {
+        console.log("add all players", data);
+        const ids = Object.keys(data);
+        ids.forEach(id => {
+            this.addNewPlayer(data[id]);
+        });
     }
 
     removePlayer(id: string) {
-        console.log(id, this.playerMap[id]);
-        this.playerMap[id].destroy();
-        delete this.playerMap[id];
+        console.log("removePlayer", id, this.playerMap[id]);
+        if (this.playerMap[id]) {
+            this.playerMap[id].destroy();
+            delete this.playerMap[id];
+        }
     }
 
     // called when player touches a star
@@ -170,6 +177,10 @@ export default class Demo extends Phaser.Scene {
     update() {
         const cursors = this.cursorKeys;
         const player = this.player;
+        if (!player) {
+            // player not set yet
+            return;
+        }
 
         // move the player using the left and right arrow keys
         if (cursors.left.isDown) {
