@@ -8,9 +8,13 @@ This quick-start project template combines Phaser 3.50 with [TypeScript 4](https
 
 This demo adds some socket.io functionality from [this Dynetis Games tutorial](https://www.dynetisgames.com/2017/03/06/how-to-make-a-multiplayer-online-game-with-phaser-socket-io-and-node-js/) and [this Game Dev Academy tutorial](https://gamedevacademy.org/create-a-basic-multiplayer-game-in-phaser-3-with-socket-io-part-1/).
 
-## Requirements
+## Requirements / Getting Started
 
-[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
+1. Install [Node.js](https://nodejs.org).  This will enable the `node` and `npm` commands required later.
+
+2. Install [VSCode](https://code.visualstudio.com/).  You can use a different IDE or code editor (Sublime, Atom, etc.) if you like.
+
+3. Install git
 
 ## Available Commands
 

@@ -47,6 +47,28 @@ export default class Demo extends Phaser.Scene {
         //   this.add.image(0, 0, 'sky').setOrigin(0, 0);
         // to change the position origin of the image to its upper left instead of its center
 
+        this.createDudeAnimations();
+        this.platforms = this.createPlatforms();
+        const stars = this.createStars();
+
+        // add collision detection between stars and platforms
+        this.physics.add.collider(stars, this.platforms);
+
+        // add default score text in the upper left
+        this.scoreText = this.add.text(16, 16, "Score: 0", { fontSize: "32px", color: "#000000" });
+
+        this.cursorKeys = this.input.keyboard.createCursorKeys();
+
+        this.createPlayer = this.createPlayer.bind(this);
+
+        this.socket = io.connect();
+        this.socket.on("newplayer", this.addNewPlayer.bind(this));
+        this.socket.on("allplayers", this.addAllPlayers.bind(this));
+        this.socket.on("remove", this.removePlayer.bind(this));
+        this.socket.emit("newplayer");
+    }
+
+    createPlatforms() {
         // create a group of static platform objects so we can control them together
         const platforms = this.physics.add.staticGroup();
 
@@ -56,7 +78,10 @@ export default class Demo extends Phaser.Scene {
         platforms.create(600, 400, "ground");
         platforms.create(50, 250, "ground");
         platforms.create(750, 220, "ground");
+        return platforms;
+    }
 
+    createStars() {
         // add 12 stars using the "star" image and repeating it
         // set xy to distribute the stars every 70 pixels across the top of the screen
         const stars = this.physics.add.group({
@@ -69,7 +94,10 @@ export default class Demo extends Phaser.Scene {
         stars.children.iterate((child: any) => {
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
         });
+        return stars;
+    }
 
+    createDudeAnimations() {
         // create animation for player going left
         // animation is made from first 4 frames of the "dude" spritesheet
         // it cycles at 10 frames per second
@@ -95,26 +123,6 @@ export default class Demo extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
-
-
-        // add collision detection between stars and platforms
-        this.physics.add.collider(stars, platforms);
-
-        this.platforms = platforms;
-        this.stars = stars;
-
-        // add default score text in the upper left
-        this.scoreText = this.add.text(16, 16, "Score: 0", { fontSize: "32px", color: "#000000" });
-
-        this.cursorKeys = this.input.keyboard.createCursorKeys();
-
-        this.createPlayer = this.createPlayer.bind(this);
-
-        this.socket = io.connect();
-        this.socket.on("newplayer", this.addNewPlayer.bind(this));
-        this.socket.on("allplayers", this.addAllPlayers.bind(this));
-        this.socket.on("remove", this.removePlayer.bind(this));
-        this.socket.emit("newplayer");
     }
 
     createPlayer(x: number, y: number) {
