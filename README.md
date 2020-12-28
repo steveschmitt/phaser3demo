@@ -10,11 +10,29 @@ This demo adds some socket.io functionality from [this Dynetis Games tutorial](h
 
 ## Requirements / Getting Started
 
-1. Install [Node.js](https://nodejs.org).  This will enable the `node` and `npm` commands required later.
+> Many of the steps below require use of the **command prompt**.  In Windows, the easiest way to open a command prompt is to open File Explorer in the desired folder, then click on the path in the bar at the top, type `cmd`, and press enter.  Then a window will open with a command prompt:
 
-2. Install [VSCode](https://code.visualstudio.com/).  You can use a different IDE or code editor (Sublime, Atom, etc.) if you like.
+    C:\Users\Myname>_
 
-3. Install git
+Here are the steps to follow if you've never used GitHub or Nodejs before.
+
+1. Install [Node.js](https://nodejs.org).  This is the JavaScript server, and enables the `node` and `npm` commands required later.  When it's installed, you should be open a command prompt and run:
+
+        node --version
+        npm --version
+
+2. Install [git](https://git-scm.com/downloads), the source-code management tool.  This will enable you to pull and push code from the shared repository on GitHub.  After you run the install, open a command prompt (CMD), and run the following commands to tell `git` what who you are.:
+
+        git config --global user.email "you@example.com"
+        git config --global user.name "Github Username"
+
+3. Install [VSCode](https://code.visualstudio.com/).  During installation, check the boxes that say "Open with Code".  That will make it easier to start VSCode in the project directory.  _(You can use a different IDE or code editor (Sublime, Atom, etc.) if you know what you're doing, but we'll be assuming VSCode.)_
+
+4. Create a folder/directory for the project.  "Git" or "GitHub" or "Repo" are popular names.
+
+
+
+
 
 ## Available Commands
 
