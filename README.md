@@ -10,37 +10,17 @@ This demo adds some socket.io functionality from [this Dynetis Games tutorial](h
 
 ## Getting Started for new users
 
-> Many of the steps below require use of the **command prompt**.  In Windows, the easiest way to open a command prompt is to open File Explorer in the desired folder, then click on the path in the bar at the top, type `cmd`, and press enter.  Then a window will open with a command prompt:
+1. See the [INTRO.md](./INTRO.md) document for info about getting your tools and folders set up.
 
-    C:\Users\Myname>_
+2. Open a command prompt in the **phaser3demo** directory.
 
-Here are the steps to follow if you've never used GitHub or Nodejs before.
+3. Run the following commands to install the libraries, compile the code, and start the server:
 
-1. Install [Node.js](https://nodejs.org).  This is the JavaScript server, and enables the `node` and `npm` commands required later.  When it's installed, you should be open a command prompt and run:
+    npm install
+    npm run dev
+    node server
 
-        node --version
-        npm --version
-
-2. Install [git](https://git-scm.com/downloads), the source-code management tool.  This will enable you to pull and push code from the shared repository on GitHub.  After you run the install, open a command prompt (CMD), and run the following commands to tell `git` what who you are.:
-
-        git config --global credential.helper wincred
-        git config --global user.email "you@example.com"
-        git config --global user.name "Github Username"
-
-3. Create a folder/directory for the project.  "Git" or "GitHub" or "Repo" are popular names.  Open a command prompt in the directory, and run
-
-        git clone https://github.com/steveschmitt/phaser3demo.git
-
-    Now you've got a local copy of the code.
-
-4. Run the following commands to install the libraries, compile the code, and start the server:
-
-        npm install
-        npm run dev
-        node server
-
-5. Open your browser to http://localhost:10001 and play the game!
-
+4. Open your browser to http://localhost:10001 and play the game!
 
 ![Screenshot](http://phaser.io/content/tutorials/making-your-first-phaser-3-game/part9.png)
 
@@ -54,8 +34,6 @@ Here are the steps to follow if you've never used GitHub or Nodejs before.
 | `npm run build` | Builds code bundle with production settings (minification, no source maps, etc..) |
 
 ## Writing Code
-
-You'll need a code editor or IDE with TypeScript and Github support.  We recommend you install [VSCode](https://code.visualstudio.com/).  During installation, check the boxes that say "Open with Code".  That will make it easier to start VSCode in the project directory.  _(You can use a different IDE or code editor (Sublime, Atom, etc.) if you know what you're doing, but we'll be assuming VSCode.)_
 
 After starting the development server with `npm run watch`, you can edit any files in the `src` folder
 and Rollup will automatically recompile and reload your server (available at `http://localhost:10001`
