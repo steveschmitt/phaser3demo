@@ -10,7 +10,7 @@ This demo adds some socket.io functionality from [this Dynetis Games tutorial](h
 
 ## Getting Started for new users
 
-1. See the [INTRO.md](./INTRO.md) document for info about getting your tools and folders set up.
+1. If you are new to Node or Git, please see the [SETUP.md](./SETUP.md) document for info about getting your tools and folders set up.
 
 2. Open a command prompt in the **phaser3demo** directory.
 

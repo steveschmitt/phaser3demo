@@ -1,6 +1,6 @@
-# Getting Started
+# Setup
 
-## Getting Started with GitHub, Node, and VSCode
+## Setting up GitHub, Node, and VSCode
 
 These are the prerequisites for getting up and going on JavaScript/TypeScript projects that are hosted on GitHub.
 
@@ -33,7 +33,7 @@ After it's installed, you should be open a command prompt and run:
 
 ### Install VSCode
 
-Download and install [VSCode](https://code.visualstudio.com/).  
+Download and install [VSCode](https://code.visualstudio.com/).
 
 During installation, when you reach the "Select Additional Tasks" dialog, check **all** the boxes:
 
@@ -43,6 +43,8 @@ During installation, when you reach the "Select Additional Tasks" dialog, check 
 - Add to PATH
 
 These settings will make it easier to start VSCode when needed.
+
+You can see [this YouTube video](https://www.youtube.com/watch?v=MlIzFUI1QGA) if you want step-by-step instructions.
 
 After it's installed, you should be open a command prompt and run:
 
@@ -54,7 +56,7 @@ and VSCode will open.
 
 Download and install [git](https://git-scm.com/downloads), the source-code management tool.  This will enable you to pull and push code from the shared repository on GitHub.  
 
-During installation, there will be many options for you to check.  You can just use the defaults (whatever is already checked).
+During installation, there will be many options for you to check.  You can just use the defaults (whatever is already checked).  You can see [this blog post](https://phoenixnap.com/kb/how-to-install-git-windows) for step-by-step instructions.
 
 After it's installed, you should be open a command prompt and run:
 
@@ -108,4 +110,3 @@ Start VSCode in the folder created above.  You can do this two ways:
 VSCode should open, with the list of files in the left-hand pane.  You are ready to start editing!
 
 See [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-use-git-integration-in-visual-studio-code) about how to use **git** from within VSCode.
-
