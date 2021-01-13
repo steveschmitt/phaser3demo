@@ -1,13 +1,6 @@
 import "phaser";
 import "socket.io-client";
-
-interface PlayerData {
-    rotation: number;
-    x: number;
-    y: number;
-    playerId: string;
-    team: "red" | "blue";
-}
+import { PlayerData } from "./playerdata";
 
 export default class Demo extends Phaser.Scene {
 

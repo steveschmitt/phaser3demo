@@ -20,7 +20,7 @@ This demo adds some socket.io functionality from [this Dynetis Games tutorial](h
     npm run dev
     node server
 
-4. Open your browser to http://localhost:10001 and play the game!
+4. Open your browser to http://localhost:8081 and play the game!
 
 ![Screenshot](http://phaser.io/content/tutorials/making-your-first-phaser-3-game/part9.png)
 
@@ -36,7 +36,7 @@ This demo adds some socket.io functionality from [this Dynetis Games tutorial](h
 ## Writing Code
 
 After starting the development server with `npm run watch`, you can edit any files in the `src` folder
-and Rollup will automatically recompile and reload your server (available at `http://localhost:10001`
+and Rollup will automatically recompile and reload your server (available at `http://localhost:8081`
 by default).
 
 All of the client-side game code is currently in `src/game.ts`.
