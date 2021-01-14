@@ -25,10 +25,10 @@ app.get('/', (req, res) => {
 
 // define what happens when a client connects to a socket
 io.on('connection', (socket: Socket) => {
-  console.log('a user connected');
+  console.log('a user connected', socket.id);
   // create a new player and add it to our players object
   players[socket.id] = {
-    rotation: 0,
+    rotation: 90,
     x: Math.floor(Math.random() * 700) + 50,
     y: Math.floor(Math.random() * 500) + 50,
     playerId: socket.id,
@@ -40,8 +40,8 @@ io.on('connection', (socket: Socket) => {
   socket.broadcast.emit('newplayer', players[socket.id]);
 
   // when a player disconnects, remove them from our players object
-  socket.on('disconnect', function () {
-    console.log('user disconnected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected', socket.id);
     // remove this player from our players object
     delete players[socket.id];
     // emit a message to all players to remove this player
@@ -50,5 +50,5 @@ io.on('connection', (socket: Socket) => {
 });
 
 server.listen(8081, function () {
-  console.log('Listening on', server.address());
+  console.log('Listening on', (server.address() as any).port);
 });

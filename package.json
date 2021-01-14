@@ -5,9 +5,10 @@
     "main": "src/game.ts",
     "scripts": {
         "dev": "rollup --config rollup.config.dev.js",
-        "build": "rollup --config rollup.config.dist.js",
+        "dev-watch": "rollup --watch --config rollup.config.dev.js",
+        "prod": "rollup --config rollup.config.dist.js",
         "serve": "tsc -p tsconfig.server.json && node dist/server",
-        "watch": "rollup --watch --config rollup.config.dev.js"
+        "watch": "npm-run-all --parallel dev-watch serve"
     },
     "repository": {
         "type": "git",
@@ -21,14 +22,15 @@
     "homepage": "https://github.com/steveschmitt/phaser3demo#readme",
     "dependencies": {
         "express": "^4.17.1",
-        "socket.io": "^3.0.4"
+        "socket.io": "^3.0.5"
     },
     "devDependencies": {
         "@rollup/plugin-replace": "^2.3.4",
         "@types/express": "4.11.1",
         "@types/socket.io": "^2.1.12",
         "@types/socket.io-client": "^1.4.34",
-        "phaser": "^3.50.0",
+        "npm-run-all2": "^5.0.2",
+        "phaser": "^3.51.0",
         "rollup": "^2.35.1",
         "rollup-plugin-commonjs": "^10.1.0",
         "rollup-plugin-node-resolve": "^5.2.0",
