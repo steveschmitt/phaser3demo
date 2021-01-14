@@ -62,6 +62,11 @@ All of the client-side game code is currently in `src/game.ts`, except for the s
 
 All of the server-side code is in `src/server.ts`.
 
+The server uses Express to listen to requests for serving the game, and socket.io for passing game data.
+
+If you want to let another computer connect to your server (for multiplayer), you will need to allow Node.js to 
+talk through your firewall.  On Windows, the default firewall is Windows Defender; see [this page](https://docs.profoundlogic.com/display/PUI/Allowing+Connections+in+Windows+Firewall) for info on how to change the settings.
+
 > TODO: describe the code concepts
 
 ## Configuring Rollup
