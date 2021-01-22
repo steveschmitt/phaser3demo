@@ -16,8 +16,8 @@ This demo adds some [socket.io](https://socket.io/) functionality from [this Dyn
 
 3. Run the following commands to install the libraries, compile the code, and start the server:
 
-    npm install
-    npm run watch
+        npm install 
+        npm run watch
 
 4. Open your browser to http://localhost:8081 and play the game!
 
