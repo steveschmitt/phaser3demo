@@ -25,6 +25,7 @@ Then a window will open with a command prompt:
 ### Install Node
 
 Download and install [Node.js](https://nodejs.org).  Nodejs is the JavaScript server, and enables the `node` and `npm` commands.  
+During installation, there will be many options for you to check. You can just use the defaults (whatever is already checked). 
 
 After it's installed, you should be open a command prompt and run:
 
@@ -67,7 +68,7 @@ After it's installed, you should be open a command prompt and run:
 After you run the install, open a command prompt, and run the following commands to tell `git` who you are.  Use your actual Github username and email address.
 
     git config --global user.name "Github Username"
-    git config --global user.email "you@example.com"
+    git config --global user.email "GithubUsername@github.com"
 
 Then run the script `configit.cmd` to configure Git to use VSCode.  The [script](./configit.cmd) is included in this folder, so if you've downloaded this already, you can just double-click it.  Otherwise, can just copy the following lines, open a command prompt, and past the lines into it:
 
