@@ -111,3 +111,5 @@ Start VSCode in the folder created above.  You can do this two ways:
 VSCode should open, with the list of files in the left-hand pane.  You are ready to start editing!
 
 See [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-use-git-integration-in-visual-studio-code) about how to use **git** from within VSCode.
+
+Go back to the [README.md](./README.md) document to continue.
