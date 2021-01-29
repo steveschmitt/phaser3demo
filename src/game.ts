@@ -42,10 +42,10 @@ export default class Demo extends Phaser.Scene {
 
         this.createDudeAnimations();
         this.platforms = this.createPlatforms();
-        const stars = this.createStars();
+        this.stars = this.createStars();
 
         // add collision detection between stars and platforms
-        this.physics.add.collider(stars, this.platforms);
+        this.physics.add.collider(this.stars, this.platforms);
 
         // add default score text in the upper left
         this.scoreText = this.add.text(16, 16, "Score: 0", { fontSize: "32px", color: "#000000" });
@@ -129,9 +129,12 @@ export default class Demo extends Phaser.Scene {
         player.setCollideWorldBounds(true);
 
         // add collision detection between player and platforms (so player will bounce)
+        console.log("create player", this.platforms);
         this.physics.add.collider(player, this.platforms);
 
         // when player overlaps star, call the collectStar function
+        console.log("create player", this.stars);
+        console.log("create player", this.collectStar);
         this.physics.add.overlap(player, this.stars, this.collectStar, null, this);
 
         return player;
@@ -167,6 +170,7 @@ export default class Demo extends Phaser.Scene {
     // called when player touches a star
     collectStar(player, star) {
         // make the star invisible
+        console.log("collectstar",player,star);
         star.disableBody(true, true);
 
         // update the score
