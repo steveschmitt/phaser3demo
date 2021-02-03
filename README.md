@@ -8,6 +8,9 @@ This quick-start project template combines Phaser 3.50 with [TypeScript 4](https
 
 This demo adds some [socket.io](https://socket.io/) functionality from [this Dynetis Games tutorial](https://www.dynetisgames.com/2017/03/06/how-to-make-a-multiplayer-online-game-with-phaser-socket-io-and-node-js/) and [this Game Dev Academy tutorial](https://gamedevacademy.org/create-a-basic-multiplayer-game-in-phaser-3-with-socket-io-part-1/).
 
+Working now on getting real-time player movement, using concepts from [Real Time Multiplayer](http://buildnewgames.com/real-time-multiplayer/); 
+see the links at the bottom of the article.
+
 ## Getting Started for new users
 
 1. If you are new to Node or Git, please see the [SETUP.md](./SETUP.md) document for info about getting your tools and folders set up.
@@ -31,7 +34,7 @@ These are defined in the **scripts** section of `package.json`.
 |---------|-------------|
 | `npm install` | Install project dependencies |
 | `npm run dev` | Builds game client code |
-| `npm run dev` | Builds game client code, watch for changes, and rebuild if anything changes |
+| `npm run dev-watch` | Builds game client code, watch for changes, and rebuild if anything changes |
 | `npm run prod` | Builds game client code bundle with production settings (minification, no source maps, etc..) |
 | `npm run serve` | Builds and starts the server |
 | `npm run watch` | Build client and server, start server, and watch for client changes |
