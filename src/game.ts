@@ -70,7 +70,8 @@ export default class Demo extends Phaser.Scene {
         platforms.create(400, 568, "ground").setScale(2).refreshBody();
         platforms.create(600, 400, "ground");
         platforms.create(50, 250, "ground");
-        platforms.create(750, 220, "ground");
+        platforms.create(750, 200, "ground");
+        
         return platforms;
     }
 
@@ -119,6 +120,10 @@ export default class Demo extends Phaser.Scene {
     }
 
     createPlayer(x: number, y: number) {
+        // correct y position if inside the ground
+        if (y>500) {
+            y == y-64
+        }
         // create the player, a movable physics sprite
         const player = this.physics.add.sprite(x, y, "dude");
 
@@ -146,7 +151,7 @@ export default class Demo extends Phaser.Scene {
         if (this.socket.id === pd.playerId) {
             this.player = player;
         } else {
-            player.setTint(0xff0000);
+            player.setTint(0xed404c);
         }
         this.playerMap[pd.playerId] = player;
     }
