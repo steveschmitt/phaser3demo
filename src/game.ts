@@ -11,7 +11,7 @@ export default class Demo extends Phaser.Scene {
     stars: Phaser.Physics.Arcade.Group;
     score = 0;
     scoreText: Phaser.GameObjects.Text;
-    socket: any;
+    socket: SocketIOClient.Socket;
 
     constructor() {
         super("demo");
@@ -58,7 +58,8 @@ export default class Demo extends Phaser.Scene {
         this.socket.on("newplayer", this.addNewPlayer.bind(this));
         this.socket.on("allplayers", this.addAllPlayers.bind(this));
         this.socket.on("remove", this.removePlayer.bind(this));
-        this.socket.emit("newplayer");
+        this.socket.emit("test", { name: "Javin", weight: 85 });
+
     }
 
     createPlatforms() {
@@ -67,11 +68,12 @@ export default class Demo extends Phaser.Scene {
 
         // add platforms using the "ground" image
         // first platform is the ground; scale it to take full width of the world
+        // screen is 800x600; origin is in upper left; increasing y makes object lower
         platforms.create(400, 568, "ground").setScale(2).refreshBody();
         platforms.create(600, 400, "ground");
         platforms.create(50, 250, "ground");
         platforms.create(750, 200, "ground");
-        
+
         return platforms;
     }
 
@@ -121,8 +123,8 @@ export default class Demo extends Phaser.Scene {
 
     createPlayer(x: number, y: number) {
         // correct y position if inside the ground
-        if (y>500) {
-            y == y-64
+        if (y > 500) {
+            y = y - 104;
         }
         // create the player, a movable physics sprite
         const player = this.physics.add.sprite(x, y, "dude");
@@ -175,7 +177,7 @@ export default class Demo extends Phaser.Scene {
     // called when player touches a star
     collectStar(player, star) {
         // make the star invisible
-        console.log("collectstar",player,star);
+        console.log("collectstar", player, star);
         star.disableBody(true, true);
 
         // update the score

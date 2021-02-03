@@ -48,6 +48,10 @@ io.on('connection', (socket: Socket) => {
         // emit a message to all players to remove this player
         io.emit('remove', socket.id);
     });
+
+    socket.on('test', (msg: any) => {
+        console.log('test received', msg);
+    });
 });
 
 // Host 0.0.0.0 allows external connections, but you may need to open your firewall.
