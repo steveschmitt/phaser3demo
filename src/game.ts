@@ -48,7 +48,7 @@ export default class Demo extends Phaser.Scene {
         this.physics.add.collider(this.stars, this.platforms);
 
         // add default score text in the upper left
-        this.scoreText = this.add.text(16, 16, "Score: 0", { fontSize: "32px", color: "#000000" });
+        this.scoreText = this.add.text(16, 16, "Score: 0", { fontSize: "50px", color: "#000000" });
 
         this.cursorKeys = this.input.keyboard.createCursorKeys();
 
@@ -84,8 +84,8 @@ export default class Demo extends Phaser.Scene {
         });
 
         // make the stars bounce a random height off the platforms when they first fall
-        stars.children.iterate((child: any) => {
-            child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+        stars.children.iterate((star: any) => {
+            star.setBounceY(Phaser.Math.FloatBetween(0.25, 1));
         });
         return stars;
     }
