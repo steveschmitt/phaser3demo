@@ -72,17 +72,18 @@ export default class Demo extends Phaser.Scene {
     }
 
     sendPosition() {
-        const x = this.player.body.center.x;
-        const y = this.player.body.center.y;
+        const center = this.player.body.center;
+        const vel = this.player.body.velocity;
     
-        const msg: PositionMessage = { x:x, y:y };
+        const msg: PositionMessage = { x:center.x, y:center.y, velocityX:vel.x, velocityY:vel.y };
         this.socket.emit("position", msg);
     }
 
     setPosition(msg: PositionMessage) {
         const player = this.playerMap[msg.playerId];
         player.setPosition(msg.x, msg.y);
-        // this.scoreText.setText(msg.x + " " + msg.y);
+        player.setVelocityX(msg.velocityX);
+        player.setVelocityY(msg.velocityY);
     }
 
     createPlatforms() {

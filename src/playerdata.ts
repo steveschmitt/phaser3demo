@@ -16,5 +16,7 @@ export interface TestMessage {
 export interface PositionMessage {
     x: number;
     y: number;
+    velocityX: number;
+    velocityY: number;
     playerId?: string;
 }
