@@ -9,9 +9,14 @@ export interface PlayerData {
 }
 
 export interface PositionMessage {
+    /** position x */
     x: number;
+    /** position y */
     y: number;
-    velocityX: number;
-    velocityY: number;
-    playerId?: string;
+    /** velocity x */
+    vx: number;
+    /** velocity y */
+    vy: number;
+    /** player id and socket id */
+    pid?: string;
 }

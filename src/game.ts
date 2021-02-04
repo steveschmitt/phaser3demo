@@ -61,9 +61,9 @@ export default class Demo extends Phaser.Scene {
 
         this.socket.on('position', this.setPosition.bind(this));
 
-        // this is how we create a looped timer event
-        const timedEvent = this.time.addEvent({
-            delay: 100,
+        // create a looped timer event for sending position
+        this.time.addEvent({
+            delay: 500,
             callback: this.sendPosition,
             callbackScope: this,
             loop: true
@@ -75,15 +75,14 @@ export default class Demo extends Phaser.Scene {
         const center = this.player.body.center;
         const vel = this.player.body.velocity;
 
-        const msg: PositionMessage = { x: center.x, y: center.y, velocityX: vel.x, velocityY: vel.y };
+        const msg: PositionMessage = { x: center.x, y: center.y, vx: vel.x, vy: vel.y };
         this.socket.emit("position", msg);
     }
 
     setPosition(msg: PositionMessage) {
-        const player = this.playerMap[msg.playerId];
+        const player = this.playerMap[msg.pid];
+        player.setVelocity(msg.vx, msg.vy);
         player.setPosition(msg.x, msg.y);
-        player.setVelocityX(msg.velocityX);
-        player.setVelocityY(msg.velocityY);
     }
 
     createPlatforms() {
@@ -237,7 +236,7 @@ export default class Demo extends Phaser.Scene {
     }
 }
 
-const config = {
+const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
     // backgroundColor: "#125555",
     width: 800,

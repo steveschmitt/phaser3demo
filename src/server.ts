@@ -51,7 +51,7 @@ io.on('connection', (socket: Socket) => {
 
     // when we get a position message, add the playerId and broadcast to other clients
     socket.on('position', (msg: PositionMessage) => {
-        msg.playerId = socket.id;
+        msg.pid = socket.id;
         socket.broadcast.emit('position', msg);
     });
 });
