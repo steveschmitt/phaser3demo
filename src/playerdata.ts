@@ -8,11 +8,6 @@ export interface PlayerData {
     team: "red" | "blue";
 }
 
-export interface TestMessage {
-    name: string;
-    weight: number;
-}
-
 export interface PositionMessage {
     x: number;
     y: number;

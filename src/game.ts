@@ -1,6 +1,6 @@
 import "phaser";
 import "socket.io-client";
-import { PlayerData, PositionMessage, TestMessage } from "./playerdata";
+import { PlayerData, PositionMessage } from "./playerdata";
 
 export default class Demo extends Phaser.Scene {
 
@@ -74,8 +74,8 @@ export default class Demo extends Phaser.Scene {
     sendPosition() {
         const center = this.player.body.center;
         const vel = this.player.body.velocity;
-    
-        const msg: PositionMessage = { x:center.x, y:center.y, velocityX:vel.x, velocityY:vel.y };
+
+        const msg: PositionMessage = { x: center.x, y: center.y, velocityX: vel.x, velocityY: vel.y };
         this.socket.emit("position", msg);
     }
 
@@ -160,19 +160,15 @@ export default class Demo extends Phaser.Scene {
         player.setCollideWorldBounds(true);
 
         // add collision detection between player and platforms (so player will bounce)
-        console.log("create player", this.platforms);
         this.physics.add.collider(player, this.platforms);
 
         // when player overlaps star, call the collectStar function
-        console.log("create player", this.stars);
-        console.log("create player", this.collectStar);
         this.physics.add.overlap(player, this.stars, this.collectStar, null, this);
 
         return player;
     }
 
     addNewPlayer(pd: PlayerData) {
-        console.log("addNewPlayer", this.socket.id, pd);
         const player = this.createPlayer(pd.x, pd.y);
         if (this.socket.id === pd.playerId) {
             this.player = player;
@@ -201,7 +197,6 @@ export default class Demo extends Phaser.Scene {
     // called when player touches a star
     collectStar(player, star) {
         // make the star invisible
-        console.log("collectstar", player, star);
         star.disableBody(true, true);
 
         // update the score
