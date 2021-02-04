@@ -7,3 +7,8 @@ export interface PlayerData {
     playerId: string;
     team: "red" | "blue";
 }
+
+export interface TestMessage {
+    name: string;
+    weight: number;
+}

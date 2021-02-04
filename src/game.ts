@@ -1,6 +1,6 @@
 import "phaser";
 import "socket.io-client";
-import { PlayerData } from "./playerdata";
+import { PlayerData, TestMessage } from "./playerdata";
 
 export default class Demo extends Phaser.Scene {
 
@@ -58,8 +58,26 @@ export default class Demo extends Phaser.Scene {
         this.socket.on("newplayer", this.addNewPlayer.bind(this));
         this.socket.on("allplayers", this.addAllPlayers.bind(this));
         this.socket.on("remove", this.removePlayer.bind(this));
-        this.socket.emit("test", { name: "Javin", weight: 85 });
 
+        this.socket.on('server-to-game-test', this.testUpdateScore.bind(this));
+
+        // this is how we create a looped timer event
+        const timedEvent = this.time.addEvent({
+            delay: 5000,
+            callback: this.sendPosition,
+            callbackScope: this,
+            loop: true
+        });
+
+    }
+
+    sendPosition() {
+        const msg: TestMessage = { name: "Javin", weight: 85 };
+        this.socket.emit("game-to-server-test", msg);
+    }
+
+    testUpdateScore(msg: TestMessage) {
+        this.scoreText.setText(msg.name + " " + msg.weight);
     }
 
     createPlatforms() {

@@ -1,7 +1,7 @@
 import * as http from "http";
 import * as os from "os";
 import * as express from "express";
-import { PlayerData } from "./playerdata";
+import { PlayerData, TestMessage } from "./playerdata";
 import { Server, Socket } from "socket.io";
 
 // create the Express  instance
@@ -49,8 +49,9 @@ io.on('connection', (socket: Socket) => {
         io.emit('remove', socket.id);
     });
 
-    socket.on('test', (msg: any) => {
-        console.log('test received', msg);
+    socket.on('game-to-server-test', (msg: TestMessage) => {
+        console.log('test received', msg, socket.id);
+        socket.broadcast.emit('server-to-game-test', msg);
     });
 });
 
