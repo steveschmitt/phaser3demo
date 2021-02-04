@@ -1,12 +1,12 @@
 import "phaser";
 import "socket.io-client";
-import { PlayerData, TestMessage } from "./playerdata";
+import { PlayerData, PositionMessage, TestMessage } from "./playerdata";
 
 export default class Demo extends Phaser.Scene {
 
     cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-    playerMap: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody[];
+    playerMap: { [id: string]: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody };
     platforms: Phaser.Physics.Arcade.StaticGroup;
     stars: Phaser.Physics.Arcade.Group;
     score = 0;
@@ -15,7 +15,7 @@ export default class Demo extends Phaser.Scene {
 
     constructor() {
         super("demo");
-        this.playerMap = [];
+        this.playerMap = {};
     }
 
     preload() {
@@ -59,11 +59,11 @@ export default class Demo extends Phaser.Scene {
         this.socket.on("allplayers", this.addAllPlayers.bind(this));
         this.socket.on("remove", this.removePlayer.bind(this));
 
-        this.socket.on('server-to-game-test', this.testUpdateScore.bind(this));
+        this.socket.on('position', this.setPosition.bind(this));
 
         // this is how we create a looped timer event
         const timedEvent = this.time.addEvent({
-            delay: 5000,
+            delay: 100,
             callback: this.sendPosition,
             callbackScope: this,
             loop: true
@@ -72,12 +72,17 @@ export default class Demo extends Phaser.Scene {
     }
 
     sendPosition() {
-        const msg: TestMessage = { name: "Javin", weight: 85 };
-        this.socket.emit("game-to-server-test", msg);
+        const x = this.player.body.center.x;
+        const y = this.player.body.center.y;
+    
+        const msg: PositionMessage = { x:x, y:y };
+        this.socket.emit("position", msg);
     }
 
-    testUpdateScore(msg: TestMessage) {
-        this.scoreText.setText(msg.name + " " + msg.weight);
+    setPosition(msg: PositionMessage) {
+        const player = this.playerMap[msg.playerId];
+        player.setPosition(msg.x, msg.y);
+        // this.scoreText.setText(msg.x + " " + msg.y);
     }
 
     createPlatforms() {

@@ -1,7 +1,7 @@
 import * as http from "http";
 import * as os from "os";
 import * as express from "express";
-import { PlayerData, TestMessage } from "./playerdata";
+import { PlayerData, PositionMessage, TestMessage } from "./playerdata";
 import { Server, Socket } from "socket.io";
 
 // create the Express  instance
@@ -52,6 +52,11 @@ io.on('connection', (socket: Socket) => {
     socket.on('game-to-server-test', (msg: TestMessage) => {
         console.log('test received', msg, socket.id);
         socket.broadcast.emit('server-to-game-test', msg);
+    });
+    socket.on('position', (msg: PositionMessage) => {
+        console.log('position received', msg, socket.id);
+        msg.playerId = socket.id;
+        socket.broadcast.emit('position', msg);
     });
 });
 
