@@ -63,7 +63,7 @@ export default class Demo extends Phaser.Scene {
 
         // create a looped timer event for sending position
         this.time.addEvent({
-            delay: 500,
+            delay: 100,
             callback: this.sendPosition,
             callbackScope: this,
             loop: true
