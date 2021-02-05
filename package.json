@@ -8,6 +8,7 @@
         "dev-watch": "rollup --watch --config rollup.config.dev.js",
         "prod": "rollup --config rollup.config.dist.js",
         "serve": "tsc -p tsconfig.server.json && node dist/server",
+        "start": "npm run dev && npm run serve",
         "watch": "npm-run-all --parallel dev-watch serve"
     },
     "repository": {
