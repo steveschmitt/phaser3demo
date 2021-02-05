@@ -72,6 +72,9 @@ export default class Demo extends Phaser.Scene {
     }
 
     sendPosition() {
+        if (!this.player) {
+            return;
+        }
         const center = this.player.body.center;
         const vel = this.player.body.velocity;
 
@@ -81,6 +84,9 @@ export default class Demo extends Phaser.Scene {
 
     setPosition(msg: PositionMessage) {
         const player = this.playerMap[msg.pid];
+        if (!player) {
+            return;
+        }
         player.setVelocity(msg.vx, msg.vy);
         player.setPosition(msg.x, msg.y);
     }
