@@ -58,7 +58,7 @@ io.on('connection', (socket: Socket) => {
 
 // Host 0.0.0.0 allows external connections, but you may need to open your firewall.
 const host = '0.0.0.0';
-const port = 8081;
+const port = (process.env.PORT || 8081) as number;
 server.listen(port, host, () => {
     const ip = getIP();
     console.log(`Listening on ${ip}:${port}`);
