@@ -5,7 +5,7 @@ export interface PlayerData {
     x: number;
     y: number;
     playerId: string;
-    team: "red" | "blue";
+    color: number;
 }
 
 export interface PositionMessage {

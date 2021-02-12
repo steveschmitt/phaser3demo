@@ -175,10 +175,9 @@ export default class Demo extends Phaser.Scene {
 
     addNewPlayer(pd: PlayerData) {
         const player = this.createPlayer(pd.x, pd.y);
-        if (this.socket.id === pd.playerId) {
+        player.setTint(pd.color);
+        if (this.socket.id === pd.playerId) {        
             this.player = player;
-        } else {
-            player.setTint(0xed404c);
         }
         this.playerMap[pd.playerId] = player;
     }

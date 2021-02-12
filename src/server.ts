@@ -24,6 +24,15 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
+const colors = [
+    0xfcba03,
+    0x34ad58,
+    0x30ade3,
+    0xde965b,
+];
+
+let playerCount = 0;
+
 // define what happens when a client connects to a socket
 io.on('connection', (socket: Socket) => {
     console.log('a user connected', socket.id);
@@ -33,8 +42,12 @@ io.on('connection', (socket: Socket) => {
         x: Math.floor(Math.random() * 700) + 50,
         y: Math.floor(Math.random() * 500) + 50,
         playerId: socket.id,
-        team: (Math.floor(Math.random() * 2) === 0) ? 'red' : 'blue'
+        color: colors[playerCount % colors.length]
     };
+    
+    console.log (playerCount,players[socket.id]);
+    playerCount++;
+
     // send the players object to the new client
     socket.emit('allplayers', players);
     // update all other clients of the new player
