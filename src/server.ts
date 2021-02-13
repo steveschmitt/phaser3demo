@@ -25,10 +25,20 @@ app.get('/', (req, res) => {
 });
 
 const colors = [
-    0xfcba03,
-    0x34ad58,
-    0x30ade3,
-    0xde965b,
+    0xffffff,
+    0xff9933,
+    0xffff33,
+    0x33ff33,
+    0x33ffcc,
+    0x33ccff,
+    0x3366ff,
+    0x6633ff,
+    0xcc33ff,
+    0xff3399,
+    0x006600,
+    0x666699,
+    0xff3333,
+    0x000066,
 ];
 
 let playerCount = 0;
