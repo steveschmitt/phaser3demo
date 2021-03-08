@@ -24,21 +24,26 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-const colors = [
-    0xffffff,
-    0xff9933,
-    0xffff33,
-    0x33ff33,
-    0x33ffcc,
-    0x33ccff,
-    0x3366ff,
-    0x6633ff,
-    0xcc33ff,
-    0xff3399,
-    0x006600,
-    0x666699,
-    0xff3333,
-    0x000066,
+interface ColorPair {
+    num: number,
+    name: string
+}
+
+const colors: ColorPair[] = [
+    { num: 0xffffff, name: "White" },
+    { num: 0xff9933, name: "Orange" },
+    { num: 0xffff33, name: "Yellow" },
+    { num: 0x33ff33, name: "Lime" },
+    { num: 0x33ffcc, name: "Turquoise" },
+    { num: 0x33ccff, name: "Cyan" }, // Sky Blue
+    { num: 0x3366ff, name: "Indigo" }, // Royal Blue
+    { num: 0x6633ff, name: "Purple" }, //Han Purple
+    { num: 0xcc33ff, name: "Magenta" },
+    { num: 0xff3399, name: "Pink" },
+    { num: 0x006600, name: "Green" },
+    { num: 0x666699, name: "Gray" }, // blue-gray
+    { num: 0xff3333, name: "Red" },
+    { num: 0x000066, name: "Navy" },
 ];
 
 let playerCount = 0;
@@ -47,15 +52,17 @@ let playerCount = 0;
 io.on('connection', (socket: Socket) => {
     console.log('a user connected', socket.id);
     // create a new player and add it to our players object
+    const colorPair = colors[playerCount % colors.length];
     players[socket.id] = {
         rotation: 90,
         x: Math.floor(Math.random() * 700) + 50,
         y: Math.floor(Math.random() * 500) + 50,
         playerId: socket.id,
-        color: colors[playerCount % colors.length]
+        color: colorPair.num,
+        name: colorPair.name
     };
-    
-    console.log (playerCount,players[socket.id]);
+
+    console.log(playerCount, players[socket.id]);
     playerCount++;
 
     // send the players object to the new client

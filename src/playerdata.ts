@@ -6,6 +6,7 @@ export interface PlayerData {
     y: number;
     playerId: string;
     color: number;
+    name: string;
 }
 
 export interface PositionMessage {

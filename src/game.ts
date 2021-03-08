@@ -2,11 +2,17 @@ import "phaser";
 import "socket.io-client";
 import { PlayerData, PositionMessage } from "./playerdata";
 
+interface PlayerInfo {
+     sprite: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+     text: Phaser.GameObjects.Text;
+     score: number;
+}
+
 export default class Demo extends Phaser.Scene {
 
     cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
-    player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-    playerMap: { [id: string]: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody };
+    player: PlayerInfo;
+    playerMap: { [id: string]: PlayerInfo};
     platforms: Phaser.Physics.Arcade.StaticGroup;
     stars: Phaser.Physics.Arcade.Group;
     score = 0;
@@ -75,8 +81,8 @@ export default class Demo extends Phaser.Scene {
         if (!this.player) {
             return;
         }
-        const center = this.player.body.center;
-        const vel = this.player.body.velocity;
+        const center = this.player.sprite.body.center;
+        const vel = this.player.sprite.body.velocity;
 
         const msg: PositionMessage = { x: center.x, y: center.y, vx: vel.x, vy: vel.y };
         this.socket.emit("position", msg);
@@ -87,8 +93,9 @@ export default class Demo extends Phaser.Scene {
         if (!player) {
             return;
         }
-        player.setVelocity(msg.vx, msg.vy);
-        player.setPosition(msg.x, msg.y);
+        player.sprite.setVelocity(msg.vx, msg.vy);
+        player.sprite.setPosition(msg.x, msg.y);
+        player.text.setPosition(msg.x, msg.y);
     }
 
     createPlatforms() {
@@ -174,8 +181,15 @@ export default class Demo extends Phaser.Scene {
     }
 
     addNewPlayer(pd: PlayerData) {
-        const player = this.createPlayer(pd.x, pd.y);
-        player.setTint(pd.color);
+        const sprite = this.createPlayer(pd.x, pd.y);
+        sprite.setTint(pd.color);
+        const playerText = this.add.text(pd.x, pd.y, pd.name, { fontSize: "12px", color: "#000000" });
+        playerText.setDisplayOrigin(15, 28);
+        const player = {
+            sprite:sprite,
+            text:playerText,
+            score: 0
+        };
         if (this.socket.id === pd.playerId) {        
             this.player = player;
         }
@@ -193,7 +207,7 @@ export default class Demo extends Phaser.Scene {
     removePlayer(id: string) {
         console.log("removePlayer", id, this.playerMap[id]);
         if (this.playerMap[id]) {
-            this.playerMap[id].destroy();
+            this.playerMap[id].sprite.destroy();
             delete this.playerMap[id];
         }
     }
@@ -216,28 +230,30 @@ export default class Demo extends Phaser.Scene {
             // player not set yet
             return;
         }
+        const sprite = this.player.sprite;
 
         // move the player using the left and right arrow keys
         if (cursors.left.isDown) {
             // move left and play "left" animation
-            player.setVelocityX(-160);
-            player.anims.play("left", true);
+            sprite.setVelocityX(-160);
+            sprite.anims.play("left", true);
 
         } else if (cursors.right.isDown) {
             // move right and play "right" animation
-            player.setVelocityX(160);
-            player.anims.play("right", true);
+            sprite.setVelocityX(160);
+            sprite.anims.play("right", true);
 
         } else {
             // stop and face forward
-            player.setVelocityX(0);
-            player.anims.play("turn");
+            sprite.setVelocityX(0);
+            sprite.anims.play("turn");
         }
 
         // jump when up arrow is pressed, but only when on a surface
-        if (cursors.up.isDown && player.body.touching.down) {
-            player.setVelocityY(-330);
+        if (cursors.up.isDown && sprite.body.touching.down) {
+            sprite.setVelocityY(-330);
         }
+        this.player.text.setPosition(sprite.x, sprite.y);
     }
 }
 

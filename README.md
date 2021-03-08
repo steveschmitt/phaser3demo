@@ -86,3 +86,14 @@ There comments inside the rollup config files to help with configuration changes
 Note that due to the build process involved, it can take around 20 seconds to build the initial bundle _if Phaser code is included in the bundle_.  It's much faster with `phaser` and `socket.io` declared `external`.  When they are external, they have to be loaded separately by the browser.  There are separate `script` tags for them in `dist/index.html`.
 
 Build times will vary based on CPU and local drive speeds. The development config does not minify the code in order to save build time, but it does generate source maps. If you do not require these, disable them in the config to speed it up further.
+
+# to do
+
+- Share star collection between running games
+- Make more terrain
+- add levels
+- Share score information between running games
+- Limit the number of players to the number of colors
+- Player names
+- bigger screen size (scale it)
+- power ups, special stars, bad guys, challenges
