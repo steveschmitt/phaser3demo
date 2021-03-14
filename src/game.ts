@@ -3,7 +3,8 @@ import "socket.io-client";
 import { PlayerData, PositionMessage } from "./playerdata";
 
 interface PlayerInfo {
-     sprite: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+     container: Phaser.GameObjects.Container;
+     sprite: Phaser.GameObjects.Sprite;
      text: Phaser.GameObjects.Text;
      score: number;
 }
@@ -58,8 +59,6 @@ export default class Demo extends Phaser.Scene {
 
         this.cursorKeys = this.input.keyboard.createCursorKeys();
 
-        this.createPlayer = this.createPlayer.bind(this);
-
         this.socket = io.connect();
         this.socket.on("newplayer", this.addNewPlayer.bind(this));
         this.socket.on("allplayers", this.addAllPlayers.bind(this));
@@ -77,25 +76,27 @@ export default class Demo extends Phaser.Scene {
 
     }
 
+    /** Send our position to the server */
     sendPosition() {
         if (!this.player) {
             return;
         }
-        const center = this.player.sprite.body.center;
-        const vel = this.player.sprite.body.velocity;
+        const body = this.player.container.body as Phaser.Physics.Arcade.Body;
+        const center = body.center;
+        const vel = body.velocity;
 
         const msg: PositionMessage = { x: center.x, y: center.y, vx: vel.x, vy: vel.y };
         this.socket.emit("position", msg);
     }
 
+    /** Set another player's position using data from the server */
     setPosition(msg: PositionMessage) {
         const player = this.playerMap[msg.pid];
         if (!player) {
             return;
         }
-        player.sprite.setVelocity(msg.vx, msg.vy);
-        player.sprite.setPosition(msg.x, msg.y);
-        player.text.setPosition(msg.x, msg.y);
+        (player.container.body as Phaser.Physics.Arcade.Body).setVelocity(msg.vx, msg.vy);
+        player.container.setPosition(msg.x, msg.y);
     }
 
     createPlatforms() {
@@ -157,40 +158,54 @@ export default class Demo extends Phaser.Scene {
         });
     }
 
-    createPlayer(x: number, y: number) {
-        // correct y position if inside the ground
-        if (y > 500) {
-            y = y - 104;
+    addNewPlayer(pd: PlayerData) {
+        // correct y position if inside the ground platform
+        if (pd.y > 500) {
+            pd.y = pd.y - 104;
         }
-        // create the player, a movable physics sprite
-        const player = this.physics.add.sprite(x, y, "dude");
+
+        // create the sprite (animated image) for the player
+        const sprite = this.make.sprite({ key: "dude"});
+
+        // set the color given by the server
+        sprite.setTint(pd.color);
+
+        // create the text for the player name
+        const playerText = this.make.text({ text: pd.name, style: { fontSize: "12px", color: "#000000" }});
+
+        // center the text over the sprite.
+        // move text to the left by ~3.5px per letter
+        playerText.setDisplayOrigin(3.5 * pd.name.length, 28);
+
+        // create container for sprite and text
+        const container = this.add.container(pd.x, pd.y, [ sprite, playerText ]);
+
+        //  Set container to the size of one sprite frame
+        container.setSize(32, 48);
+
+        this.physics.world.enable(container);
+        const body = container.body as Phaser.Physics.Arcade.Body;
 
         // when the player lands it will bounce a little
-        player.setBounce(0.2);
+        body.setBounce(0.2, 0.2);
 
         // player cannot go outside the bounds of the world
-        player.setCollideWorldBounds(true);
+        body.setCollideWorldBounds(true);
 
         // add collision detection between player and platforms (so player will bounce)
-        this.physics.add.collider(player, this.platforms);
+        this.physics.add.collider(container, this.platforms);
 
         // when player overlaps star, call the collectStar function
-        this.physics.add.overlap(player, this.stars, this.collectStar, null, this);
+        this.physics.add.overlap(container, this.stars, this.collectStar, null, this);
 
-        return player;
-    }
-
-    addNewPlayer(pd: PlayerData) {
-        const sprite = this.createPlayer(pd.x, pd.y);
-        sprite.setTint(pd.color);
-        const playerText = this.add.text(pd.x, pd.y, pd.name, { fontSize: "12px", color: "#000000" });
-        playerText.setDisplayOrigin(15, 28);
         const player = {
-            sprite:sprite,
-            text:playerText,
+            body: body,
+            container: container,
+            sprite: sprite,
+            text: playerText,
             score: 0
         };
-        if (this.socket.id === pd.playerId) {        
+        if (this.socket.id === pd.playerId) {
             this.player = player;
         }
         this.playerMap[pd.playerId] = player;
@@ -207,7 +222,7 @@ export default class Demo extends Phaser.Scene {
     removePlayer(id: string) {
         console.log("removePlayer", id, this.playerMap[id]);
         if (this.playerMap[id]) {
-            this.playerMap[id].sprite.destroy();
+            this.playerMap[id].container.destroy();
             delete this.playerMap[id];
         }
     }
@@ -224,36 +239,36 @@ export default class Demo extends Phaser.Scene {
 
     // called by phaser 60 times per second
     update() {
-        const cursors = this.cursorKeys;
         const player = this.player;
         if (!player) {
             // player not set yet
             return;
         }
+        const cursors = this.cursorKeys;
         const sprite = this.player.sprite;
+        const body = this.player.container.body as Phaser.Physics.Arcade.Body;
 
         // move the player using the left and right arrow keys
         if (cursors.left.isDown) {
             // move left and play "left" animation
-            sprite.setVelocityX(-160);
+            body.setVelocityX(-160);
             sprite.anims.play("left", true);
 
         } else if (cursors.right.isDown) {
             // move right and play "right" animation
-            sprite.setVelocityX(160);
+            body.setVelocityX(160);
             sprite.anims.play("right", true);
 
         } else {
             // stop and face forward
-            sprite.setVelocityX(0);
+            body.setVelocityX(0);
             sprite.anims.play("turn");
         }
 
         // jump when up arrow is pressed, but only when on a surface
-        if (cursors.up.isDown && sprite.body.touching.down) {
-            sprite.setVelocityY(-330);
+        if (cursors.up.isDown && body.touching.down) {
+            body.setVelocityY(-330);
         }
-        this.player.text.setPosition(sprite.x, sprite.y);
     }
 }
 
