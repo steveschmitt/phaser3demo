@@ -16,8 +16,6 @@ export default class Demo extends Phaser.Scene {
     playerMap: { [id: string]: PlayerInfo};
     platforms: Phaser.Physics.Arcade.StaticGroup;
     stars: Phaser.Physics.Arcade.Group;
-    score = 0;
-    scoreText: Phaser.GameObjects.Text;
     socket: SocketIOClient.Socket;
 
     constructor() {
@@ -53,9 +51,6 @@ export default class Demo extends Phaser.Scene {
 
         // add collision detection between stars and platforms
         this.physics.add.collider(this.stars, this.platforms);
-
-        // add default score text in the upper left
-        this.scoreText = this.add.text(16, 16, "Score: 0", { fontSize: "50px", color: "#000000" });
 
         this.cursorKeys = this.input.keyboard.createCursorKeys();
 
@@ -173,12 +168,16 @@ export default class Demo extends Phaser.Scene {
         // create the text for the player name
         const playerText = this.make.text({ text: pd.name, style: { fontSize: "12px", color: "#000000" }});
 
+        const scoreText = this.make.text({ text: "0", style: { fontSize: "12px", color: "#000000" }});
+
         // center the text over the sprite.
         // move text to the left by ~3.5px per letter
         playerText.setDisplayOrigin(3.5 * pd.name.length, 28);
+        scoreText.setDisplayOrigin(3, 38);
 
         // create container for sprite and text
-        const container = this.add.container(pd.x, pd.y, [ sprite, playerText ]);
+        const container = this.add.container(pd.x, pd.y, [ sprite, playerText, scoreText ]);
+        container.name = pd.playerId;
 
         //  Set container to the size of one sprite frame
         container.setSize(32, 48);
@@ -202,7 +201,7 @@ export default class Demo extends Phaser.Scene {
             body: body,
             container: container,
             sprite: sprite,
-            text: playerText,
+            text: scoreText,
             score: 0
         };
         if (this.socket.id === pd.playerId) {
@@ -228,13 +227,15 @@ export default class Demo extends Phaser.Scene {
     }
 
     // called when player touches a star
-    collectStar(player, star) {
+    collectStar(container, star) {
         // make the star invisible
         star.disableBody(true, true);
 
         // update the score
-        this.score += 10;
-        this.scoreText.setText("Score: " + this.score);
+        const player = this.playerMap[container.name];
+        player.score +=10;
+        player.text.setText("" + player.score);
+        
     }
 
     // called by phaser 60 times per second
