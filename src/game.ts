@@ -110,8 +110,8 @@ export default class Demo extends Phaser.Scene {
     }
 
     createStars() {
-        // add 12 stars using the "star" image and repeating it
-        // set xy to distribute the stars every 70 pixels across the top of the screen
+        // add 17 stars using the "star" image and repeating it
+        // set xy to distribute the stars every 45 pixels across the top of the screen
         const stars = this.physics.add.group({
             key: "star",
             repeat: 17,

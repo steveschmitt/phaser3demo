@@ -97,3 +97,4 @@ Build times will vary based on CPU and local drive speeds. The development confi
 - Player names
 - bigger screen size (scale it)
 - power ups, special stars, bad guys, challenges
+- see notes and plugins at [rexrainbow.github.io](https://rexrainbow.github.io/phaser3-rex-notes/docs/site/)
