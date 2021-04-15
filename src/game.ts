@@ -166,9 +166,9 @@ export default class Demo extends Phaser.Scene {
         sprite.setTint(pd.color);
 
         // create the text for the player name
-        const playerText = this.make.text({ text: pd.name, style: { fontSize: "12px", color: "#000000" }});
+        const playerText = this.make.text({ text: pd.name, style: { fontSize: "12px", color: "#000000", fontFamily: "Verdana" }});
 
-        const scoreText = this.make.text({ text: "0", style: { fontSize: "12px", color: "#000000" }});
+        const scoreText = this.make.text({ text: "0", style: { fontSize: "12px", color: "#000000", fontFamily: "Calibri" }});
 
         // center the text over the sprite.
         // move text to the left by ~3.5px per letter
